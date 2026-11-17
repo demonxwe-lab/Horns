@@ -1,5 +1,6 @@
 package com.example.horns;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.command.OrderedRenderCommandQueue;
@@ -25,6 +26,11 @@ public class HornsFeature extends FeatureRenderer<PlayerEntityRenderState, Playe
     public void render(MatrixStack matrices, OrderedRenderCommandQueue queue, int light,
                        PlayerEntityRenderState state, float yaw, float pitch) {
         if (state.invisible) return;
+
+        MinecraftClient client = MinecraftClient.getInstance();
+        if (client.player == null || state.id != client.player.getId()) {
+            return;
+        }
 
         matrices.push();
         this.getContextModel().head.applyTransform(matrices);
