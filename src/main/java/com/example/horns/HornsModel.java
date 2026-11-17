@@ -1,7 +1,7 @@
 package com.example.horns;
 
 import net.minecraft.client.model.*;
-import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.render.entity.state.PlayerEntityRenderState;
 import net.minecraft.util.Identifier;
@@ -11,7 +11,7 @@ public class HornsModel extends Model<PlayerEntityRenderState> {
         new EntityModelLayer(Identifier.of("horns", "horns"), "main");
 
     public HornsModel(ModelPart root) {
-        super(root, RenderLayer::getEntityTranslucent);
+        super(root, RenderLayers::entityTranslucent);
     }
 
     public static TexturedModelData getTexturedModelData() {
