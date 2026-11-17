@@ -23,18 +23,18 @@ public class HornsModel extends Model<PlayerEntityRenderState> {
     }
 
     private static void addHorn(ModelPartData root, String name, int side) {
-        float[] size = {2.6f, 2.2f, 1.8f, 1.4f, 1.0f};
-        // Positive bends outward, negative curves the tips back inward
-        float[] roll = {0.45f, 0.10f, -0.12f, -0.18f, -0.20f};
-        // Negative tilts forward at the base, positive sweeps up and back
-        float[] pitch = {-0.25f, 0.15f, 0.25f, 0.25f, 0.20f};
+        float[] size = {2.5f, 2.1f, 1.7f, 1.3f, 0.9f};
+        // Slight outward angle at the base, then straight/slightly inward at the tips
+        float[] roll = {0.28f, 0.08f, -0.05f, -0.08f, -0.08f};
+        // Strong forward tilt at segments 0-1 (-), then sweeps up and back (+) on segments 2-4
+        float[] pitch = {-0.65f, -0.25f, 0.45f, 0.50f, 0.40f};
         float h = 2.0f;
 
         ModelPartData parent = root;
         for (int i = 0; i < 5; i++) {
             float w = size[i];
             ModelTransform t = (i == 0)
-                ? ModelTransform.of(side * 2.6f, -6.2f, -1.8f, pitch[i], 0f, side * roll[i])
+                ? ModelTransform.of(side * 2.4f, -6.2f, -2.5f, pitch[i], 0f, side * roll[i])
                 : ModelTransform.of(0f, -h, 0f, pitch[i], 0f, side * roll[i]);
             parent = parent.addChild(name + i,
                 ModelPartBuilder.create()
