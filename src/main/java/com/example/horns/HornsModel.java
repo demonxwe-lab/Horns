@@ -23,22 +23,24 @@ public class HornsModel extends Model<PlayerEntityRenderState> {
     }
 
     private static void addHorn(ModelPartData root, String name, int side) {
-        float[] size = {2.5f, 2.1f, 1.7f, 1.3f, 0.9f};
-        // Slight outward angle at the base, then straight/slightly inward at the tips
-        float[] roll = {0.28f, 0.08f, -0.05f, -0.08f, -0.08f};
-        // Strong forward tilt at segments 0-1 (-), then sweeps up and back (+) on segments 2-4
-        float[] pitch = {-0.65f, -0.25f, 0.45f, 0.50f, 0.40f};
-        float h = 2.0f;
+        // 8 segments tapering from thick base (3.2) down to needle-sharp tip (0.5)
+        float[] size  = {3.2f, 2.8f, 2.4f, 2.0f, 1.6f, 1.2f, 0.8f, 0.5f};
+        // Starts angled wide outward (+), then curves smoothly inward (-) toward vertical points
+        float[] roll  = {0.85f, 0.25f, -0.15f, -0.22f, -0.22f, -0.18f, -0.15f, -0.12f};
+        // Sweeps forward (-) at the base, then curves upward and slightly back (+) at the tips
+        float[] pitch = {-0.55f, -0.20f, 0.10f, 0.18f, 0.20f, 0.18f, 0.15f, 0.12f};
+        float h = 2.6f;
 
         ModelPartData parent = root;
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 8; i++) {
             float w = size[i];
+            int uvY = Math.min(i, 4) * 8; // maps cleanly onto your existing 16x40 texture
             ModelTransform t = (i == 0)
-                ? ModelTransform.of(side * 2.4f, -6.2f, -2.5f, pitch[i], 0f, side * roll[i])
+                ? ModelTransform.of(side * 3.0f, -5.8f, -1.5f, pitch[i], 0f, side * roll[i])
                 : ModelTransform.of(0f, -h, 0f, pitch[i], 0f, side * roll[i]);
             parent = parent.addChild(name + i,
                 ModelPartBuilder.create()
-                    .uv(0, i * 8)
+                    .uv(0, uvY)
                     .cuboid(-w / 2f, -h, -w / 2f, w, h, w),
                 t);
         }
