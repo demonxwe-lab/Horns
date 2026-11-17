@@ -1,7 +1,7 @@
 package com.example.horns;
 
 import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
@@ -30,7 +30,7 @@ public class HornsFeature extends FeatureRenderer<PlayerEntityRenderState, Playe
         this.getContextModel().head.applyTransform(matrices);
 
         queue.submitModel(model, state, matrices,
-            RenderLayer.getEntityTranslucent(TEXTURE),
+            RenderLayers.entityTranslucent(TEXTURE),
             light, OverlayTexture.DEFAULT_UV, state.outlineColor, null);
         matrices.pop();
     }
