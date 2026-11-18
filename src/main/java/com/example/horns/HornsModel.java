@@ -23,26 +23,32 @@ public class HornsModel extends Model<PlayerEntityRenderState> {
     }
 
     private static void addHorn(ModelPartData root, String name, int side) {
-        // 8 segments tapering from thick base (3.2) down to needle-sharp tip (0.5)
-        float[] size  = {3.2f, 2.8f, 2.4f, 2.0f, 1.6f, 1.2f, 0.8f, 0.5f};
-        // Starts angled wide outward (+), then curves smoothly inward (-) toward vertical points
-        float[] roll  = {0.85f, 0.25f, -0.15f, -0.22f, -0.22f, -0.18f, -0.15f, -0.12f};
-        // Sweeps forward (-) at the base, then curves upward and slightly back (+) at the tips
-        float[] pitch = {-0.55f, -0.20f, 0.10f, 0.18f, 0.20f, 0.18f, 0.15f, 0.12f};
-        float h = 2.6f;
+        // 1. Base emerging straight out from the side of the head
+        root.addChild(name + "_base",
+            ModelPartBuilder.create()
+                .uv(0, 0)
+                .cuboid(-1.5f, -1.5f, -1.5f, 3.0f, 3.0f, 3.0f),
+            ModelTransform.of(side * 4.5f, -5.0f, -0.5f, 0f, 0f, 0f));
 
-        ModelPartData parent = root;
-        for (int i = 0; i < 8; i++) {
-            float w = size[i];
-            int uvY = Math.min(i, 4) * 8; // maps cleanly onto your existing 16x40 texture
-            ModelTransform t = (i == 0)
-                ? ModelTransform.of(side * 3.0f, -5.8f, -1.5f, pitch[i], 0f, side * roll[i])
-                : ModelTransform.of(0f, -h, 0f, pitch[i], 0f, side * roll[i]);
-            parent = parent.addChild(name + i,
-                ModelPartBuilder.create()
-                    .uv(0, uvY)
-                    .cuboid(-w / 2f, -h, -w / 2f, w, h, w),
-                t);
-        }
+        // 2. Outer elbow stepping out and slightly up
+        root.addChild(name + "_elbow",
+            ModelPartBuilder.create()
+                .uv(0, 8)
+                .cuboid(-1.25f, -1.25f, -1.25f, 2.5f, 2.5f, 2.5f),
+            ModelTransform.of(side * 6.0f, -6.5f, -0.5f, 0f, 0f, 0f));
+
+        // 3. Tall vertical shaft rising straight up
+        root.addChild(name + "_shaft",
+            ModelPartBuilder.create()
+                .uv(0, 16)
+                .cuboid(-1.0f, -2.0f, -1.0f, 2.0f, 4.0f, 2.0f),
+            ModelTransform.of(side * 6.5f, -8.8f, -0.5f, 0f, 0f, 0f));
+
+        // 4. Tip hooking inward at the top
+        root.addChild(name + "_tip",
+            ModelPartBuilder.create()
+                .uv(0, 28)
+                .cuboid(-1.0f, -1.0f, -1.0f, 2.0f, 2.0f, 2.0f),
+            ModelTransform.of(side * 5.2f, -10.3f, -0.5f, 0f, 0f, 0f));
     }
 }
